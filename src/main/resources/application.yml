@@ -1,3 +1,7 @@
+vd:
+  features:
+    disable-security: true
+    disable-data-source: true
 spring:
   application:
     name: video-downloader
