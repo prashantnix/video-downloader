@@ -1,0 +1,9 @@
+There are 3 lifecycle events that take place in order:
+    1. pre-download
+    2. download
+    3. post-download
+
+Application provides hooks for each of these events when they are emitted.
+    PRE_DOWNLOAD    ->      @PreDownloadPlugin
+    DOWNLOAD        ->      @Download
+    POST_DOWNLOAD   ->      @PostDownloadPlugin

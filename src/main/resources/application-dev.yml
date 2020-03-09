@@ -1,0 +1,13 @@
+vd:
+  base-storage-path: /mnt/self/downloads/general/video-downloader
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/vd-db?currentSchema=vd-db-schema
+    username: vd-user
+    password: vd-password
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    properties:
+      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: create

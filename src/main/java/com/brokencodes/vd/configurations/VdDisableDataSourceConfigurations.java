@@ -16,4 +16,5 @@ import org.springframework.context.annotation.Configuration;
         havingValue = "true"
 )
 public class VdDisableDataSourceConfigurations {
+
 }
