@@ -5,7 +5,7 @@ import com.brokencodes.vd.beans.downloader.Storage;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class Video {
+public class VideoMeta {
 
     private String id;
 

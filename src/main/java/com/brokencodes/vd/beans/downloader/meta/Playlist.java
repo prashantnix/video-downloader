@@ -14,7 +14,7 @@ public class Playlist {
 
     private String uploader;
 
-    private List<Video> entries;
+    private List<VideoMeta> entries;
 
     private Thumbnail thumbnail;
 
