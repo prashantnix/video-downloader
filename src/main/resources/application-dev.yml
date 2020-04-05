@@ -2,7 +2,7 @@ vd:
   base-storage-path: /mnt/self/downloads/general/video-downloader
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/vd-db?currentSchema=vd-db-schema
+    url: jdbc:postgresql://172.17.0.3:5432/vd-db?currentSchema=vd-db-schema
     username: vd-user
     password: vd-password
     driver-class-name: org.postgresql.Driver

@@ -1,39 +1,39 @@
-<nav class="navbar is-white is-fixed-top" role="navigation" aria-label="main navigation">
-    <div class="container">
-        <div class="navbar-brand">
-            <a class="navbar-item" routerLink="/home">
-                <div class="is-size-4 has-text-weight-light">youtube<span
-                        class="has-text-weight-semibold">downloader</span></div>
-            </a>
+<nav aria-label="main navigation" class="navbar is-dark is-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-brand">
+      <a class="navbar-item" routerLink="/home">
+        <div class="is-size-4 has-text-weight-light">youtube<span
+          class="has-text-weight-semibold">downloader</span></div>
+      </a>
 
-            <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
-                data-target="ydl-navigation">
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-            </a>
-        </div>
-
-        <div id="ydl-navigation" class="navbar-menu">
-            <div class="navbar-end">
-                <div class="navbar-item">
-                    <a class="has-size-7" routerLink="/login"><strong class="has-text-dark">Login</strong></a>
-                </div>
-                <div class="navbar-item">
-                    <a href="" class="has-size-7" routerLink="/register"><strong class="has-text-dark">Register</strong></a>
-                </div>
-                <div class="navbar-item has-dropdown is-hoverable">
-                    <a class=" has-size-7 navbar-link"><strong class="has-text-dark">Help and documentation</strong></a>
-                    <div class="navbar-dropdown">
-                        <a href="#" class="navbar-item has-size-7"><span class="has-text-dark">User guide</span></a>
-                        <a href="#" class="navbar-item has-size-7"><span class="has-text-dark">Supported websites</span></a>
-                        <hr class="navbar-divider">
-                        <a routerLink="/credits" class="navbar-item has-size-7"><span class="has-text-dark">Credits</span></a>
-                        <a href="#" class="navbar-item has-size-7"><span class="has-text-dark">Disclaimer</span></a>
-                        <a href="#" class="navbar-item has-size-7"><span class="has-text-dark">About us</span></a>
-                    </div>
-                </div>
-            </div>
-        </div>
+      <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="ydl-navigation"
+         role="button">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
     </div>
+
+    <div class="navbar-menu" id="ydl-navigation">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <a class="has-size-7" routerLink="/login"><strong class="has-text-light">Login</strong></a>
+        </div>
+        <div class="navbar-item">
+          <a class="has-size-7" href="" routerLink="/register"><strong class="has-text-light">Register</strong></a>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class=" has-size-7 navbar-link"><strong class="has-text-light">Help and documentation</strong></a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item has-size-7" href="#"><span class="has-text-dark">User guide</span></a>
+            <a class="navbar-item has-size-7" href="#"><span class="has-text-dark">Supported websites</span></a>
+            <hr class="navbar-divider">
+            <a class="navbar-item has-size-7" routerLink="/credits"><span class="has-text-dark">Credits</span></a>
+            <a class="navbar-item has-size-7" href="#"><span class="has-text-dark">Disclaimer</span></a>
+            <a class="navbar-item has-size-7" href="#"><span class="has-text-dark">About us</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </nav>

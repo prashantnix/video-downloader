@@ -7,3 +7,5 @@ Application provides hooks for each of these events when they are emitted.
     PRE_DOWNLOAD    ->      @PreDownloadPlugin
     DOWNLOAD        ->      @Download
     POST_DOWNLOAD   ->      @PostDownloadPlugin
+
+* Must have auto update feature -> if a new video in the playlist is added/updated, it should automatically be downloaded and user should be reminded of the same
