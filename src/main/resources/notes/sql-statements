@@ -1,0 +1,9 @@
+select 'drop table "' || tablename || '" cascade;' from pg_tables where pg_tables.schemaname='vd-db-schema';
+
+
+drop table "vd-db"."vd-db-schema".vd_user_configuration cascade;
+drop table "vd-db"."vd-db-schema".vd_user cascade;
+drop table "vd-db"."vd-db-schema".vd_role cascade;
+drop table "vd-db"."vd-db-schema".vd_user_profile cascade;
+drop table "vd-db"."vd-db-schema".vd_download_profile cascade;
+drop table "vd-db"."vd-db-schema".vd_proxy_configuration cascade;

@@ -12,19 +12,17 @@ import javax.persistence.Id;
 @AllArgsConstructor
 
 @Entity
-public class ProxyConfiguration {
+public class DownloadProfile {
 
     @Id
     private String id;
 
-    private String url;
+    private String profileName;
 
-    private int port;
+    private boolean shouldAddIndexToDownloadedFiles;
 
-    private String username;
+    private boolean isMultiThreadingEnabled;
 
-    private String password;
-
-    private boolean isProxyEnabled;
+    private int maxParallelDownloads;
 
 }

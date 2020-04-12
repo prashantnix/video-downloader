@@ -1,8 +1,21 @@
 package com.brokencodes.vd.beans.users;
 
-import com.brokencodes.vd.beans.downloader.configurations.Configuration;
+import com.brokencodes.vd.beans.downloader.configurations.UserConfiguration;
+import lombok.*;
 
+import javax.persistence.*;
+
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+
+@Entity
 public class UserProfile {
+
+    @Id
+    private String id;
 
     private String email;
 
@@ -10,6 +23,13 @@ public class UserProfile {
 
     private String lastName;
 
-    private Configuration configurations;
+    @OneToOne(
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY,
+            orphanRemoval = true
+    )
+    @JoinColumn(name = "id")
+    @MapsId
+    private UserConfiguration configurations;
 
 }

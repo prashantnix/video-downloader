@@ -2,8 +2,17 @@ vd:
   features:
     disable-security: true
 #    disable-data-source: true
+    enable-endpoint-request-logging: true
+
 spring:
   application:
     name: video-downloader
   profiles:
     active: dev
+
+logging:
+  level:
+    root: info
+    org.springframework.web: debug
+    org.hibernate: debug
+    com.brokencodes.vd: debug
