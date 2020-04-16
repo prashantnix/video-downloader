@@ -15,7 +15,10 @@ import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Data
 public class UserRegistrationRequest implements IValidateRequest {
@@ -27,49 +30,6 @@ public class UserRegistrationRequest implements IValidateRequest {
     private String password;
 
     private String confirmationPassword;
-
-    public User toUser(ITokenGenerator tokenGenerator, PasswordEncoder passwordEncoder) {
-        String userId = tokenGenerator.generateTokenFromString(email);
-        return User.builder()
-                .id(userId)
-                .email(email)
-                .password(passwordEncoder.encode(password))
-                .roles(
-                        Arrays.asList(
-                                Role.builder()
-                                        .name(ROLE_NEW_USER)
-                                        .build()
-                        ).stream().collect(Collectors.toSet())
-                )
-                .profile(
-                        UserProfile.builder()
-                                .id(userId)
-                                .email(email)
-                                .configurations(
-                                        UserConfiguration.builder()
-                                                .proxyConfiguration(
-                                                        ProxyConfiguration.builder()
-                                                                .id(userId)
-                                                                .build()
-                                                )
-                                                .downloadProfiles(
-                                                        Arrays.asList(
-                                                                DownloadProfile.builder()
-                                                                        .id(userId)
-                                                                        .profileName("DEFAULT")
-                                                                        .isMultiThreadingEnabled(false)
-                                                                        .shouldAddIndexToDownloadedFiles(false)
-                                                                        .maxParallelDownloads(1)
-                                                                        .build()
-                                                        ).stream().collect(Collectors.toSet())
-                                                )
-                                                .shouldStoreDownloadsInIndividualDirectory(true)
-                                                .build()
-                                )
-                                .build()
-                )
-                .build();
-    }
 
     @Override
     public Validation validate() {
@@ -94,6 +54,49 @@ public class UserRegistrationRequest implements IValidateRequest {
             return new Validation("Passwords do not match");
         }
         return null;
+    }
+
+    public User toUser(final ITokenGenerator tokenGenerator, final PasswordEncoder passwordEncoder) {
+        String userId = tokenGenerator.generateTokenFromString(email);
+        return User.builder()
+                .id(userId)
+                .email(email)
+                .password(passwordEncoder.encode(password))
+                .roles(
+                        new HashSet<>(Collections.singletonList(
+                                Role.builder()
+                                        .name(ROLE_NEW_USER)
+                                        .build()
+                        ))
+                )
+                .profile(
+                        UserProfile.builder()
+                                .id(userId)
+                                .email(email)
+                                .configurations(
+                                        UserConfiguration.builder()
+                                                .proxyConfiguration(
+                                                        ProxyConfiguration.builder()
+                                                                .id(userId)
+                                                                .build()
+                                                )
+                                                .downloadProfiles(
+                                                        Stream.of(
+                                                                DownloadProfile.builder()
+                                                                        .id(userId)
+                                                                        .profileName("DEFAULT")
+                                                                        .isMultiThreadingEnabled(false)
+                                                                        .shouldAddIndexToDownloadedFiles(false)
+                                                                        .maxParallelDownloads(1)
+                                                                        .build()
+                                                        ).collect(Collectors.toSet())
+                                                )
+                                                .shouldStoreDownloadsInIndividualDirectory(true)
+                                                .build()
+                                )
+                                .build()
+                )
+                .build();
     }
 
 }
