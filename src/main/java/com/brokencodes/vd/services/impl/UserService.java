@@ -14,6 +14,12 @@ public class UserService implements IUserService {
 
     @Override
     public User save(User user) {
+        userRepository.findByEmail(user.getEmail())
+                .ifPresent(
+                        existingUser -> {
+                            throw new IllegalArgumentException("User with given email id already exists");
+                        }
+                );
         return userRepository.save(user);
     }
 

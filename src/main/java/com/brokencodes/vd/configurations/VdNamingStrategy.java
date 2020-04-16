@@ -7,7 +7,12 @@ import org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy;
 import java.text.MessageFormat;
 
 /**
- * Adds vd_ as prefix for all table names.
+ * Adds vd_ as prefix for all table names - even when you provide a custom name for the table. For example,
+ * <code>
+ *      @JoinTable(name = "vd_tab_name", ...)
+ *      private Set<TabName> tabName;
+ * </code>
+ * translates the name to: <code>vd_vd_tab_name</code>
  */
 public class VdNamingStrategy extends SpringPhysicalNamingStrategy {
 
