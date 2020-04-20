@@ -10,26 +10,21 @@ import com.brokencodes.vd.endpoints.users.response.UserEmailVerificationResponse
 import com.brokencodes.vd.endpoints.users.response.UserRegistrationResponse;
 import com.brokencodes.vd.endpoints.users.shallow.ShallowUser;
 import com.brokencodes.vd.endpoints.users.shallow.UserToShallowUserMapper;
+import com.brokencodes.vd.events.SendEmailVerificationEmailEvent;
 import com.brokencodes.vd.services.api.IMailSenderService;
 import com.brokencodes.vd.services.api.ITokenGenerator;
 import com.brokencodes.vd.services.api.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.MessageFormat;
 import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/api/users")
 public class UserEndpoint {
-
-    private static final String MAIL_WELCOME_SENDER = "welcome@vd.com";
-
-    private static final String WELCOME_MESSAGE_FORMAT = "Please use {0} as account activation and verification code";
-
-    public static final String WELCOME_MAIL_SUBJECT = "Account activation code";
 
     @Value("${vd.time-outs.email-verification-token}")
     private String emailVerificationTimeout;
@@ -47,7 +42,7 @@ public class UserEndpoint {
     private UserToShallowUserMapper userToShallowUserMapper;
 
     @Autowired
-    private IMailSenderService mailSenderService;
+    private ApplicationEventPublisher publisher;
 
     @GetMapping({
             "/get/{user-id}",
@@ -91,12 +86,9 @@ public class UserEndpoint {
                 userEmailVerificationResendRequest.getEmail(),
                 emailVerificationTimeout));
 
-        mailSenderService.send(
-                MAIL_WELCOME_SENDER,
-                userEmailVerificationResendRequest.getEmail(),
-                WELCOME_MAIL_SUBJECT,
-                MessageFormat.format(WELCOME_MESSAGE_FORMAT, existingUserByEmailId.getAccountVerificationToken().getToken())
-        );
+        userService.updateUser(existingUserByEmailId);
+
+        publisher.publishEvent(new SendEmailVerificationEmailEvent(existingUserByEmailId));
 
         return UserEmailVerificationResendResponse.builder()
                 .message("A new verification code has been successfully generated and sent to your email id. This code is only valid for 24 hours")
@@ -108,11 +100,9 @@ public class UserEndpoint {
     public UserRegistrationResponse addUser(@RequestBody final UserRegistrationRequest userRegistrationRequest) {
         final User user = userRegistrationRequest.toUser(tokenGenerator, passwordEncoder, emailVerificationTimeout);
         userService.save(user);
-        mailSenderService.send(
-                MAIL_WELCOME_SENDER,
-                user.getEmail(),
-                WELCOME_MAIL_SUBJECT,
-                MessageFormat.format(WELCOME_MESSAGE_FORMAT, user.getAccountVerificationToken().getToken()));
+
+        publisher.publishEvent(new SendEmailVerificationEmailEvent(user));
+
         return UserRegistrationResponse.builder()
                 .userId(user.getId())
                 .build();

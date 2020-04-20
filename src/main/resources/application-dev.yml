@@ -2,6 +2,11 @@ vd:
   base-storage-path: /mnt/self/downloads/general/video-downloader
   time-outs:
     email-verification-token: 1d
+  async:
+    core-pool-size: 2
+    max-pool-size: 2
+    queue-capacity: 500
+    thread-name-prefix: VD-ASYNC-
 spring:
   mail:
     host: 172.17.0.4
