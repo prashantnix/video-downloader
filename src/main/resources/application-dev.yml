@@ -1,14 +1,13 @@
 vd:
   base-storage-path: /mnt/self/downloads/general/video-downloader
-  time-consts:
-    seconds: 1
-    minutes: 60 * ${vd.time-consts.seconds}
-    hours: 60 * ${vd.time-consts.minutes}
-    days: 24 * ${vd.time-consts.hours}
   time-outs:
-    email-verification-token: 1 * ${vd.time-consts.days}
-
+    email-verification-token: 1d
 spring:
+  mail:
+    host: 172.17.0.4
+    port: 1025
+    username:
+    password:
   datasource:
     url: jdbc:postgresql://172.17.0.2:5432/vd-db?currentSchema=vd-db-schema
     username: vd-user

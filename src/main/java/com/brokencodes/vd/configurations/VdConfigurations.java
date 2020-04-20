@@ -14,4 +14,5 @@ public class VdConfigurations {
     public PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 }

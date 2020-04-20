@@ -5,8 +5,8 @@ import lombok.Data;
 
 @Data
 @Builder
-public class UserRegistrationResponse {
+public class UserEmailVerificationResponse {
 
-    private String userId;
+    private String message;
+
 }
-

@@ -4,7 +4,10 @@ import com.brokencodes.vd.beans.users.User;
 import com.brokencodes.vd.repositories.UserRepository;
 import com.brokencodes.vd.services.api.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.text.MessageFormat;
 
 @Service
 public class UserService implements IUserService {
@@ -21,6 +24,25 @@ public class UserService implements IUserService {
                         }
                 );
         return userRepository.save(user);
+    }
+
+    @Override
+    public User updateUser(User user) {
+        userRepository.findByEmail(user.getEmail())
+                .orElseThrow(() -> new IllegalArgumentException("User with given email id does not not exist"));
+        return userRepository.save(user);
+    }
+
+    @Override
+    public User findById(String userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new UsernameNotFoundException(MessageFormat.format("User with user id: {} was not found", userId)));
+    }
+
+    @Override
+    public User findByEmailId(String emailId) {
+        return userRepository.findByEmail(emailId)
+                .orElseThrow(() -> new UsernameNotFoundException(MessageFormat.format("User with email id: {} was not found", emailId)));
     }
 
 }

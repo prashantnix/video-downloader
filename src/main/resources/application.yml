@@ -2,7 +2,6 @@ vd:
   features:
     disable-security: true
 #    disable-data-source: true
-    enable-endpoint-request-logging: true
 
 spring:
   application:
@@ -13,6 +12,6 @@ spring:
 logging:
   level:
     root: info
-    org.springframework.web: debug
-    org.hibernate: debug
+    org.springframework.web: info
+    org.hibernate: info
     com.brokencodes.vd: debug

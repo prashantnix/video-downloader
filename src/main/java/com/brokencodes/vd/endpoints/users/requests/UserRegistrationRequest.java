@@ -6,6 +6,7 @@ import com.brokencodes.vd.beans.downloader.configurations.UserConfiguration;
 import com.brokencodes.vd.beans.users.Role;
 import com.brokencodes.vd.beans.users.User;
 import com.brokencodes.vd.beans.users.UserProfile;
+import com.brokencodes.vd.beans.ydl.TimeUnit;
 import com.brokencodes.vd.endpoints.base.IValidateRequest;
 import com.brokencodes.vd.endpoints.base.Validation;
 import com.brokencodes.vd.services.api.ITokenGenerator;
@@ -14,7 +15,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.stream.Collectors;
@@ -56,12 +56,15 @@ public class UserRegistrationRequest implements IValidateRequest {
         return null;
     }
 
-    public User toUser(final ITokenGenerator tokenGenerator, final PasswordEncoder passwordEncoder) {
-        String userId = tokenGenerator.generateTokenFromString(email);
+    public User toUser(final ITokenGenerator tokenGenerator, final PasswordEncoder passwordEncoder, String expirationTime) {
+        String userId = tokenGenerator.generateFixedTokenFromString(email);
         return User.builder()
                 .id(userId)
                 .email(email)
                 .password(passwordEncoder.encode(password))
+                .isAccountVerified(false)
+                .isEnabled(false)
+                .accountVerificationToken(tokenGenerator.generateStoredTokenFromString(email, expirationTime))
                 .roles(
                         new HashSet<>(Collections.singletonList(
                                 Role.builder()

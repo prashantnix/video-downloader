@@ -1,8 +1,11 @@
 package com.brokencodes.vd.beans.users;
 
+import com.brokencodes.vd.beans.ydl.Token;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -20,6 +23,10 @@ public class User {
     private String email;
 
     private String password;
+
+    private boolean isEnabled;
+
+    private boolean isAccountVerified;
 
     @ManyToMany(
             fetch = FetchType.LAZY,
@@ -40,5 +47,13 @@ public class User {
     @JoinColumn(name = "id")
     @MapsId
     private UserProfile profile;
+
+    @OneToOne(
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    @JoinColumn(name = "account_verification_token")
+    private Token accountVerificationToken;
 
 }
