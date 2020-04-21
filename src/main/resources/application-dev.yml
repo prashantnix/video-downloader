@@ -2,6 +2,9 @@ vd:
   base-storage-path: /mnt/self/downloads/general/video-downloader
   time-outs:
     email-verification-token: 1d
+    jwt: 5h
+  security:
+    jwt-token-key: jWt_T0k3N-K3y
   async:
     core-pool-size: 2
     max-pool-size: 2
@@ -9,7 +12,7 @@ vd:
     thread-name-prefix: VD-ASYNC-
 spring:
   mail:
-    host: 172.17.0.4
+    host: 172.17.0.3
     port: 1025
     username:
     password:
@@ -27,4 +30,4 @@ spring:
     hibernate:
       naming:
         physicalStrategy: com.brokencodes.vd.configurations.VdNamingStrategy
-      ddl-auto: create
+      ddl-auto: update

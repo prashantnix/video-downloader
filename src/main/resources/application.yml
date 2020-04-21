@@ -1,7 +1,7 @@
 vd:
   features:
-    disable-security: true
-#    disable-data-source: true
+    disable-security: false
+    disable-data-source: false
 
 spring:
   application:

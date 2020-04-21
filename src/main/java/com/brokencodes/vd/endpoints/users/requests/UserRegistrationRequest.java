@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -32,28 +33,28 @@ public class UserRegistrationRequest implements IValidateRequest {
     private String confirmationPassword;
 
     @Override
-    public Validation validate() {
+    public Optional<Validation> validate() {
 
         // Email Validations
         if (StringUtils.isBlank(email)) {
-            return new Validation("Provide an email id");
+            return Optional.of(new Validation("Provide an email id"));
         }
         if (!EmailValidator.getInstance().isValid(email)) {
-            return new Validation("Email id is not valid");
+            return Optional.of(new Validation("Email id is not valid"));
         }
 
         // Password Validations
         if (StringUtils.isBlank(password)) {
-            return new Validation("Provide a password");
+            return Optional.of(new Validation("Provide a password"));
         }
         if (password.length() < 6) {
-            return new Validation("Password must be at least 6 characters long");
+            return Optional.of(new Validation("Password must be at least 6 characters long"));
         }
         // TODO:  Password policy validation
         if (!password.equals(confirmationPassword)) {
-            return new Validation("Passwords do not match");
+            return Optional.of(new Validation("Passwords do not match"));
         }
-        return null;
+        return Optional.empty();
     }
 
     public User toUser(final ITokenGenerator tokenGenerator, final PasswordEncoder passwordEncoder, String expirationTime) {

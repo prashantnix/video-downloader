@@ -36,13 +36,13 @@ public class UserService implements IUserService {
     @Override
     public User findById(String userId) {
         return userRepository.findById(userId)
-                .orElseThrow(() -> new UsernameNotFoundException(MessageFormat.format("User with user id: {} was not found", userId)));
+                .orElseThrow(() -> new UsernameNotFoundException(MessageFormat.format("User with user id: {0} was not found", userId)));
     }
 
     @Override
     public User findByEmailId(String emailId) {
         return userRepository.findByEmail(emailId)
-                .orElseThrow(() -> new UsernameNotFoundException(MessageFormat.format("User with email id: {} was not found", emailId)));
+                .orElseThrow(() -> new UsernameNotFoundException(MessageFormat.format("User with email id: {0} was not found", emailId)));
     }
 
 }

@@ -14,6 +14,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.Optional;
 
 @Aspect
 @Component
@@ -31,7 +32,8 @@ public class HttpRequestBodyValidatingAspect {
                 .filter(arg -> arg instanceof IValidateRequest)
                 .map(arg -> (IValidateRequest) arg)
                 .map(IValidateRequest::validate)
-                .filter(Objects::nonNull)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
                 .filter(Validation::isFailed)
                 .findFirst()
                 .ifPresent(failedValidation -> { throw new ResponseStatusException(HttpStatus.BAD_REQUEST, failedValidation.getMessage()); });

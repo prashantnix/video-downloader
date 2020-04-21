@@ -2,16 +2,14 @@ package com.brokencodes.vd.endpoints.users;
 
 import com.brokencodes.vd.annotations.ValidateRequestBody;
 import com.brokencodes.vd.beans.users.User;
-import com.brokencodes.vd.endpoints.users.requests.UserEmailVerificationRequest;
-import com.brokencodes.vd.endpoints.users.requests.UserEmailVerificationResendRequest;
-import com.brokencodes.vd.endpoints.users.requests.UserRegistrationRequest;
+import com.brokencodes.vd.endpoints.users.requests.*;
 import com.brokencodes.vd.endpoints.users.response.UserEmailVerificationResendResponse;
 import com.brokencodes.vd.endpoints.users.response.UserEmailVerificationResponse;
+import com.brokencodes.vd.endpoints.users.response.UserJwtTokenResponse;
 import com.brokencodes.vd.endpoints.users.response.UserRegistrationResponse;
-import com.brokencodes.vd.endpoints.users.shallow.ShallowUser;
-import com.brokencodes.vd.endpoints.users.shallow.UserToShallowUserMapper;
+import com.brokencodes.vd.endpoints.users.shadow.ShadowUser;
+import com.brokencodes.vd.endpoints.users.shadow.UserToShadowUserMapper;
 import com.brokencodes.vd.events.SendEmailVerificationEmailEvent;
-import com.brokencodes.vd.services.api.IMailSenderService;
 import com.brokencodes.vd.services.api.ITokenGenerator;
 import com.brokencodes.vd.services.api.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,28 +37,36 @@ public class UserEndpoint {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private UserToShallowUserMapper userToShallowUserMapper;
+    private UserToShadowUserMapper userToShadowUserMapper;
 
     @Autowired
     private ApplicationEventPublisher publisher;
 
     @GetMapping({
-            "/get/{user-id}",
-            "/get/{user-id}/shallow"
+            "/protected/get/{user-id}",
+            "/protected/get/{user-id}/shadow"
     })
-    public ShallowUser findUserShallow(@PathVariable("user-id") final String userId) {
-        return userToShallowUserMapper.toShallowUser(userService.findById(userId));
+    public ShadowUser findUserShallow(@PathVariable("user-id") final String userId) {
+        return userToShadowUserMapper.toShadowUser(userService.findById(userId));
     }
 
-    @GetMapping("/get/{user-id}/deep")
+    @GetMapping("/protected/get/{user-id}/deep")
     public User findUserDeep(@PathVariable("user-id") final String userId) {
         return userService.findById(userId);
     }
 
+//    @PostMapping("/login")
+//    @ValidateRequestBody
+//    public UserJwtTokenResponse authenticateUser(
+//            @RequestBody final UserIdentificationWithEmailAndPasswordRequest loginRequest) {
+//
+//        return null;
+//    }
+
     @PostMapping("/verify-email")
     @ValidateRequestBody
     public UserEmailVerificationResponse verifyUserEmail(
-            @RequestBody final UserEmailVerificationRequest userEmailVerificationRequest) {
+            @RequestBody final UserIdentificationWithEmailAndTokenRequest userEmailVerificationRequest) {
         User userToVerify = userService.findByEmailId(userEmailVerificationRequest.getEmail());
         if (userToVerify.getAccountVerificationToken().getExpiresOn().isAfter(LocalDateTime.now())
                 && userToVerify.getAccountVerificationToken().getToken().equals(userEmailVerificationRequest.getToken())) {
@@ -80,7 +86,7 @@ public class UserEndpoint {
     @PostMapping("/verify-email/resend")
     @ValidateRequestBody
     public UserEmailVerificationResendResponse resendVerificationEmail(
-            @RequestBody final UserEmailVerificationResendRequest userEmailVerificationResendRequest) {
+            @RequestBody final UserIdentificationWithEmailRequest userEmailVerificationResendRequest) {
         User existingUserByEmailId = userService.findByEmailId(userEmailVerificationResendRequest.getEmail());
         existingUserByEmailId.setAccountVerificationToken(tokenGenerator.generateStoredTokenFromString(
                 userEmailVerificationResendRequest.getEmail(),
